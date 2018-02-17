@@ -1,7 +1,8 @@
 # Local Dev Registry
 
 A quick-start local docker registry with persistent storage for
-development purposes. SSL setup included because: reasons.
+development purposes. SSL setup included because:
+_reasons_.
 
 ## Dependencies
 
@@ -12,4 +13,10 @@ development purposes. SSL setup included because: reasons.
 
 - Clone this repo.
 - Run `make` in the directory this repo was cloned to. 
+
+## Use
+
+- `docker tag your/thing:v1 127.0.0.1:443/thing:v1`
+- `docker push 127.0.0.1:443/thing:v1`
+- `docker rmi 127.0.0.1:443/thing:v1`
 
