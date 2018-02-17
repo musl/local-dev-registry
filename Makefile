@@ -14,15 +14,14 @@ SSL_CRT        := certs/domain.crt
 all: run
 
 clean: stop
-	rm -f certs/*
-	rm -fr var/lib/registry/*
+	rm -fr certs registry
 
-run: stop $(SSL_CRT)
+run: stop registry $(SSL_CRT)
 	docker run -d \
 		--restart=always \
 		--name $(NAME) \
 		-v `pwd`/certs:/certs \
-		-v `pwd`/var/lib/registry:/var/lib/registry \
+		-v `pwd`/registry:/var/lib/registry \
 		-e REGISTRY_HTTP_ADDR=$(HTTP_BIND_ADDR) \
 		-e REGISTRY_HTTP_TLS_CERTIFICATE=$(SSL_CRT) \
 		-e REGISTRY_HTTP_TLS_KEY=$(SSL_KEY) \
@@ -42,6 +41,12 @@ $(SSL_CRT): $(SSL_KEY)
 		-key $(SSL_KEY) \
 		-out $(SSL_CRT)
 
-$(SSL_KEY):
+$(SSL_KEY): certs
 	openssl genrsa -out $(SSL_KEY) $(SSL_RSA_BITS)
+
+certs:
+	mkdir -p certs
+
+registry:
+	mkdir -p registry
 
